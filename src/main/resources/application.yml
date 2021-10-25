@@ -12,4 +12,5 @@ cloud:
     stack:
       auto: false # Automatic stack detection
 custom:
-  bucket-name:springexamplebucket
+  bucket-name: springexamplebucket
+  sqs-queue-name: springexamplesqs
