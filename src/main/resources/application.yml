@@ -11,3 +11,5 @@ cloud:
       auto: false
     stack:
       auto: false # Automatic stack detection
+custom:
+  bucket-name:springexamplebucket
