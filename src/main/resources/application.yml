@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: spring-aws
+
+cloud:
+  aws:
+    credentials:
+      profile-name: sasha
+    region:
+      static: eu-east-2
+      auto: false
+    stack:
+      auto: false # Automatic stack detection
