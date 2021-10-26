@@ -2,7 +2,6 @@ package com.example.springaws;
 
 import com.amazonaws.services.s3.event.S3EventNotification;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
@@ -15,12 +14,9 @@ import org.springframework.stereotype.Component;
 public class QueueListener {
 
     private final QueueMessagingTemplate queueMessagingTemplate;
-    private final NotificationMessagingTemplate notificationMessagingTemplate;
 
-    public QueueListener(QueueMessagingTemplate queueMessagingTemplate,
-                         NotificationMessagingTemplate notificationMessagingTemplate) {
+    public QueueListener(QueueMessagingTemplate queueMessagingTemplate) {
         this.queueMessagingTemplate = queueMessagingTemplate;
-        this.notificationMessagingTemplate = notificationMessagingTemplate;
     }
 
     @SqsListener(value = "${custom.sqs-queue-name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
@@ -38,6 +34,5 @@ public class QueueListener {
         }
 
         this.queueMessagingTemplate.convertAndSend("queueNameToNotify", payload);
-        this.notificationMessagingTemplate.convertAndSend("topicNameToNotify", payload);
     }
 }
