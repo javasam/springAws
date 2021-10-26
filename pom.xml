@@ -72,7 +72,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>Application</mainClass>
                 </configuration>
                 <executions>
                     <execution>
