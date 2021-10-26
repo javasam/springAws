@@ -2,6 +2,7 @@ package com.example.springaws;
 
 import com.amazonaws.services.s3.event.S3EventNotification;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
 import org.springframework.cloud.aws.messaging.listener.annotation.SqsListener;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class QueueListener {
+
+    @Value("${custom.sqs-queue-name}")
+    private String queueName;
 
     private final QueueMessagingTemplate queueMessagingTemplate;
 
@@ -33,6 +37,6 @@ public class QueueListener {
                     .build();
         }
 
-        this.queueMessagingTemplate.convertAndSend("springexamplesqs", payload);
+        this.queueMessagingTemplate.convertAndSend(queueName, payload);
     }
 }
