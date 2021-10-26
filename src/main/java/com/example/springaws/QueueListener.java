@@ -1,8 +1,7 @@
 package com.example.springaws;
 
 import com.amazonaws.services.s3.event.S3EventNotification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.cloud.aws.messaging.listener.SqsMessageDeletionPolicy;
@@ -11,10 +10,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class QueueListener {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(QueueListener.class);
 
     private final QueueMessagingTemplate queueMessagingTemplate;
     private final NotificationMessagingTemplate notificationMessagingTemplate;
@@ -27,10 +25,10 @@ public class QueueListener {
 
     @SqsListener(value = "${custom.sqs-queue-name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
     public void onS3UploadEvent(S3EventNotification event) {
-        LOGGER.info("Incoming S3EventNotification: " + event.toJson());
+        log.info("Incoming S3EventNotification: " + event.toJson());
       Message<String> payload = null;
 
-        if (event.getRecords().size() > 0) {
+        if (event.getRecords() != null && !event.getRecords().isEmpty()) {
             String bucket = event.getRecords().get(0).getS3().getBucket().getName();
             String key = event.getRecords().get(0).getS3().getObject().getKey();
 
