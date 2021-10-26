@@ -26,17 +26,17 @@ public class QueueListener {
     @SqsListener(value = "${custom.sqs-queue-name}", deletionPolicy = SqsMessageDeletionPolicy.ON_SUCCESS)
     public void onS3UploadEvent(S3EventNotification event) {
         log.info("Incoming S3EventNotification: " + event.toJson());
-      Message<String> payload = null;
 
         if (event.getRecords() != null && !event.getRecords().isEmpty()) {
             String bucket = event.getRecords().get(0).getS3().getBucket().getName();
             String key = event.getRecords().get(0).getS3().getObject().getKey();
 
-            payload = MessageBuilder
+            Message<String> payload = MessageBuilder
                     .withPayload("New upload happened: " + bucket + "/" + key)
                     .build();
+            this.queueMessagingTemplate.convertAndSend(queueName, payload);
+            log.info("Message {} sent", payload);
         }
 
-        this.queueMessagingTemplate.convertAndSend(queueName, payload);
     }
 }
