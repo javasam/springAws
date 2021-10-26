@@ -33,6 +33,6 @@ public class QueueListener {
                     .build();
         }
 
-        this.queueMessagingTemplate.convertAndSend("queueNameToNotify", payload);
+        this.queueMessagingTemplate.convertAndSend("springexamplesqs", payload);
     }
 }
